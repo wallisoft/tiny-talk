@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>tiny-talk: say it in pictures anyone can read</title>
+<meta name="description" content="tiny-talk: say it in pictures anyone can read. Blissymbolics written in emoji, in 19 languages. Look up any word, see how it is built, and vote on the pictures.">
+<link rel="icon" href="icon-128.png">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header><div class="wrap"><nav>
+  <a class="brand" href="index.html"><span class="e">👄➡️⬅️</span> tiny-talk</a>
+  <a href="words.html" data-p="words">Words</a>
+  <a href="pictures.html" data-p="pictures">Pictures</a>
+  <a href="vote.html" data-p="vote">Vote</a>
+  <a href="https://visualised.org">App</a>
+  <a href="https://github.com/wallisoft/tiny-talk">GitHub</a>
+  <select class="lang" id="lang" aria-label="Language"></select>
+</nav></div></header>
+<main>
+<div class="wrap hero">
+  <div class="big e">👄➡️⬅️</div>
+  <h1>Say it in pictures anyone can read.</h1>
+  <p>tiny-talk writes Blissymbolics in emoji. A message belongs to no language: whoever reads it reads it in theirs.</p>
+  <div class="btns">
+    <a class="btn amber" href="https://visualised.org/downloads/TinyTalk.html">Try the app</a>
+    <a class="btn ghost" href="words.html">Look up a word</a>
+    <a class="btn ghost" href="https://visualised.org/downloads/TinyTalk.apk">Android app</a>
+  </div>
+  <div class="stats"><div><b id="nWords">…</b>words</div><div><b id="nPics">…</b>pictures</div><div><b id="nLangs">…</b>languages</div></div>
+</div>
+
+<section><div class="wrap">
+  <h2>Read a message</h2>
+  <p class="lead">Paste pictures someone sent you, or change the language at the top: the pictures stay the same.</p>
+  <div class="reader card">
+    <textarea id="msg" rows="2" class="e">👄⁠➡️⁠⬅️  🧑⁠❤️⁠➕⁠❗  ❤️⁠⬆️⁠🏷️  📅⁠🔜</textarea>
+    <div class="out" id="out"></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Every word has a recipe</h2>
+  <p class="lead">Bliss builds thousands of words from a few hundred basic characters. tiny-talk gives each of those one picture, so every word follows.</p>
+  <div class="grid" id="recipes"></div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Make it better</h2>
+  <p class="lead">The pictures and words are plain text on GitHub, open to everyone. The popular suggestions rise to the top.</p>
+  <div class="grid">
+    <div class="card"><div class="e" style="font-size:34px">👍</div><b>Vote</b><p class="muted">Give a 👍 to the suggestions you like. Counted every day.</p><a class="btn small" href="vote.html">See the suggestions</a></div>
+    <div class="card"><div class="e" style="font-size:34px">💡</div><b>Suggest</b><p class="muted">A better picture or a better word, in any language, from any word in the dictionary.</p><a class="btn small" href="words.html">Find a word</a></div>
+    <div class="card"><div class="e" style="font-size:34px">✍️</div><b>Edit</b><p class="muted">Words are one to a line, a file per language. Fix one and send a pull request.</p><a class="btn small" href="https://github.com/wallisoft/tiny-talk/blob/main/CONTRIBUTING.md">How to take part</a></div>
+  </div>
+</div></section>
+</main>
+<script src="tt.js"></script>
+<script>
+TT.load().then(() => {
+  const s = TT.rows;
+  document.getElementById("nWords").textContent = s.length.toLocaleString();
+  document.getElementById("nPics").textContent = TT.core().size;
+  document.getElementById("nLangs").textContent = TT.langs.length;
+  const msg = document.getElementById("msg"), out = document.getElementById("out");
+  const readNow = () => out.textContent = "👁️ " + TT.read(msg.value);
+  msg.addEventListener("input", readNow);
+  const show = ["hello", "goodbye", "happy", "sad", "tomorrow", "teacher", "peace", "kitchen", "to cry", "to dream", "friend", "song"];
+  const draw = () => {
+    readNow();
+    document.getElementById("recipes").innerHTML = show.map(w => {
+      const r = TT.find(w, "en", 5).find(x => x.words.en.map(y => y.toLowerCase()).includes(w)); if (!r) return "";
+      const parts = r.parts.map(p => TT.byId(p)).filter(Boolean).filter(p => !/^indicator|^\(/.test(p.words.en[0] || ""))
+        .map(p => TT.word(p)).filter(Boolean);
+      return `<a class="card recipe" style="text-decoration:none;color:inherit" href="words.html?id=${r.id}">
+        <div class="pics e">${TT.esc(r.bare)}</div><div class="w">${TT.esc(TT.word(r))}</div>
+        <div class="how">${parts.length ? TT.esc(parts.join(" + ")) : ""}</div></a>`;
+    }).join("");
+  };
+  TT.langPicker(document.getElementById("lang"), draw);
+  draw();
+});
+</script>
+<footer><div class="wrap">
+  Words, recipes and translations: <a href="https://www.blissymbolics.org">Blissymbolics Communication International</a>,
+  BCI Authorized Vocabulary 2026-09-12, CC BY-SA 4.0. tiny-talk's pictures and data: CC BY-SA 4.0,
+  <a href="https://github.com/wallisoft/tiny-talk">on GitHub</a>. tiny-talk is independent of BCI.
+  Made by Wallisoft, with <a href="https://visualised.io">Visualised</a>.
+</div></footer>
+<script>document.querySelectorAll("nav a[data-p]").forEach(a => { if (location.pathname.includes(a.dataset.p)) a.classList.add("on"); });</script>
+</body>
+</html>

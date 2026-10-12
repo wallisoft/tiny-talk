@@ -1,0 +1,39 @@
+name: Suggest a picture
+description: A better emoji for a basic character, or a picture of its own for a whole word.
+title: "Picture: "
+labels: [picture, vote]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you! Others vote on suggestions with a 👍 on this issue. A good picture is old enough to show on most
+        phones, shows in colour without extra codes, is one emoji (not a sequence), and isn't already used.
+  - type: input
+    id: symbol
+    attributes:
+      label: BCI number
+      description: The number of the character or word (shown on tiny-talk.world).
+      placeholder: "17006"
+    validations:
+      required: true
+  - type: input
+    id: meaning
+    attributes:
+      label: What it means
+      placeholder: sky
+  - type: input
+    id: current
+    attributes:
+      label: Its pictures now
+  - type: input
+    id: proposed
+    attributes:
+      label: The picture you suggest
+      placeholder: "☁️"
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it reads better
+      description: In any language. Especially welcome — how it reads where you live.

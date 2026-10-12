@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vote · tiny-talk</title>
+<meta name="description" content="tiny-talk: say it in pictures anyone can read. Blissymbolics written in emoji, in 19 languages. Look up any word, see how it is built, and vote on the pictures.">
+<link rel="icon" href="icon-128.png">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header><div class="wrap"><nav>
+  <a class="brand" href="index.html"><span class="e">👄➡️⬅️</span> tiny-talk</a>
+  <a href="words.html" data-p="words">Words</a>
+  <a href="pictures.html" data-p="pictures">Pictures</a>
+  <a href="vote.html" data-p="vote">Vote</a>
+  <a href="https://visualised.org">App</a>
+  <a href="https://github.com/wallisoft/tiny-talk">GitHub</a>
+  <select class="lang" id="lang" aria-label="Language"></select>
+</nav></div></header>
+<main><section><div class="wrap">
+  <h2>Suggestions, most wanted first</h2>
+  <p class="lead">Each one is an issue on GitHub. Give it a 👍 there to vote: the count here is updated every day.
+    Pictures for the core need 10 votes, words of their own 5. <a href="https://github.com/wallisoft/tiny-talk/blob/main/GOVERNANCE.md">How it works</a>.</p>
+  <div class="results" id="list"><p class="muted">…</p></div>
+  <p class="muted" id="counted"></p>
+</div></section></main>
+<script src="tt.js"></script>
+<script>
+TT.load().then(async () => {
+  const list = document.getElementById("list");
+  let data = { suggestions: [] };
+  for (const url of [TT.RAW + "dist/votes.json", "data/votes.json"]) {
+    try { const r = await fetch(url, { cache: "no-cache" }); if (r.ok) { data = await r.json(); break; } } catch (e) {}
+  }
+  const draw = () => {
+    const s = data.suggestions || [];
+    if (!s.length) {
+      list.innerHTML = `<div class="card"><b>No suggestions yet.</b> <span class="muted">Be the first:</span>
+        <div class="acts" style="margin-top:8px"><a class="btn small" href="https://github.com/wallisoft/tiny-talk/issues/new?template=picture.yml">💡 Suggest a picture</a>
+        <a class="btn small ghost" href="https://github.com/wallisoft/tiny-talk/issues/new?template=word.yml">✍️ Suggest a word</a></div></div>`;
+      return;
+    }
+    list.innerHTML = s.map(x => {
+      const r = TT.byId(x.symbol), m = r ? TT.word(r) : x.meaning;
+      const what = x.kind === "picture" ? `<span class="e">${TT.esc(x.current || "?")}</span> → <span class="e">${TT.esc(x.proposed)}</span>`
+                                        : `${TT.esc(x.current || "…")} → <b>${TT.esc(x.proposed)}</b> <span class="muted">${TT.esc(x.language)}</span>`;
+      return `<div class="card vote"><div class="n">${x.votes}<small>👍</small></div>
+        <div><div class="what">${what}</div><div class="muted">${TT.esc(m || x.title)} · BCI ${TT.esc(x.symbol)}</div></div>
+        <a class="btn small go" href="${x.url}">Vote on GitHub</a></div>`;
+    }).join("");
+  };
+  if (data.counted) document.getElementById("counted").textContent = "Counted " + new Date(data.counted).toLocaleString();
+  TT.langPicker(document.getElementById("lang"), draw);
+  draw();
+});
+</script>
+<footer><div class="wrap">
+  Words, recipes and translations: <a href="https://www.blissymbolics.org">Blissymbolics Communication International</a>,
+  BCI Authorized Vocabulary 2026-09-12, CC BY-SA 4.0. tiny-talk's pictures and data: CC BY-SA 4.0,
+  <a href="https://github.com/wallisoft/tiny-talk">on GitHub</a>. tiny-talk is independent of BCI.
+  Made by Wallisoft, with <a href="https://visualised.io">Visualised</a>.
+</div></footer>
+<script>document.querySelectorAll("nav a[data-p]").forEach(a => { if (location.pathname.includes(a.dataset.p)) a.classList.add("on"); });</script>
+</body>
+</html>

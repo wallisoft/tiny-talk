@@ -1,0 +1,33 @@
+name: Suggest a word
+description: A missing word, a better one, or a correction, in any language.
+title: "Word: "
+labels: [word, vote]
+body:
+  - type: input
+    id: symbol
+    attributes:
+      label: BCI number
+      placeholder: "14164"
+    validations:
+      required: true
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      options: [en English, sv Svenska, "no Norsk", da Dansk, fi Suomi, is Íslenska, de Deutsch, nl Nederlands, af Afrikaans, fr Français, es Español, pt Português, it Italiano, pl Polski, hu Magyar, lt Lietuvių, lv Latviešu, ru Русский, eo Esperanto, Another language (say which below)]
+    validations:
+      required: true
+  - type: input
+    id: current
+    attributes:
+      label: The word now
+  - type: input
+    id: proposed
+    attributes:
+      label: The word you suggest
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Anything else

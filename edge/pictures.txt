@@ -1,0 +1,2 @@
+# The edge: a whole word given a picture of its own, in place of the pictures of its parts.
+# BCI number = picture  # word. Added by vote: see CONTRIBUTING.md.

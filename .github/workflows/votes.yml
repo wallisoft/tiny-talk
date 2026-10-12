@@ -1,0 +1,44 @@
+# Count the 👍 on every open suggestion, once a day, into dist/votes.json for the vote page.
+name: votes
+on:
+  schedule:
+    - cron: "17 4 * * *"
+  issues:
+    types: [opened, closed, reopened, labeled]
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: read
+concurrency: votes
+jobs:
+  tally:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require("fs");
+            const field = (body, label) => {
+              const m = (body || "").match(new RegExp("### " + label + "\\s*\\n+([^\\n#][^\\n]*)"));
+              const v = m ? m[1].trim() : "";
+              return v === "_No response_" ? "" : v;
+            };
+            const issues = await github.paginate(github.rest.issues.listForRepo,
+              { owner: context.repo.owner, repo: context.repo.repo, labels: "vote", state: "open", per_page: 100 });
+            const out = issues.filter(i => !i.pull_request).map(i => ({
+              number: i.number, url: i.html_url, title: i.title,
+              kind: i.labels.map(l => l.name).includes("picture") ? "picture" : "word",
+              symbol: field(i.body, "BCI number"), meaning: field(i.body, "What it means"),
+              language: field(i.body, "Language"), current: field(i.body, "(?:Its pictures now|The word now)"),
+              proposed: field(i.body, "(?:The picture you suggest|The word you suggest)"),
+              votes: i.reactions["+1"], against: i.reactions["-1"], opened: i.created_at,
+            })).sort((a, b) => (b.votes - b.against) - (a.votes - a.against) || a.number - b.number);
+            fs.mkdirSync("dist", { recursive: true });
+            fs.writeFileSync("dist/votes.json", JSON.stringify({ counted: new Date().toISOString(), suggestions: out }, null, 1));
+      - name: Commit votes.json if it changed
+        run: |
+          git config user.name "tiny-talk votes"
+          git config user.email "actions@users.noreply.github.com"
+          git add dist/votes.json
+          git diff --cached --quiet || (git commit -m "votes: counted" && git push)

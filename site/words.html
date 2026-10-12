@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Look up a word · tiny-talk</title>
+<meta name="description" content="tiny-talk: say it in pictures anyone can read. Blissymbolics written in emoji, in 19 languages. Look up any word, see how it is built, and vote on the pictures.">
+<link rel="icon" href="icon-128.png">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header><div class="wrap"><nav>
+  <a class="brand" href="index.html"><span class="e">👄➡️⬅️</span> tiny-talk</a>
+  <a href="words.html" data-p="words">Words</a>
+  <a href="pictures.html" data-p="pictures">Pictures</a>
+  <a href="vote.html" data-p="vote">Vote</a>
+  <a href="https://visualised.org">App</a>
+  <a href="https://github.com/wallisoft/tiny-talk">GitHub</a>
+  <select class="lang" id="lang" aria-label="Language"></select>
+</nav></div></header>
+<main><section><div class="wrap">
+  <h2>Look up a word</h2>
+  <p class="lead">In your language, at the top. Each word shows its pictures, what it is built from, and every language it has.</p>
+  <div class="search"><input id="q" type="search" placeholder="🔍" autocomplete="off" autofocus></div>
+  <div class="results" id="results"></div>
+</div></section></main>
+<script src="tt.js"></script>
+<script>
+TT.load().then(() => {
+  const q = document.getElementById("q"), res = document.getElementById("results");
+  const params = new URLSearchParams(location.search);
+  const entry = r => {
+    const l = TT.lang(), ws = r.words[l].length ? r.words[l] : r.words.en;
+    const parts = r.parts.map(p => {
+      const pr = TT.byId(p), c = TT.core().get(p);
+      if (p.startsWith("[")) return "";
+      const pic = pr ? pr.bare : c ? c.pic : "?", w = pr ? TT.word(pr) : c ? c.gloss.split(",")[0].replace(/_/g, " ") : "?";
+      return `<a class="chip" href="words.html?id=${p}"><b class="e">${TT.esc(pic)}</b> ${TT.esc(w)}</a>`;
+    }).join("");
+    const all = TT.langs.filter(c => r.words[c].length).map(c => `<tr><td>${TT.NAMES[c]}</td><td>${TT.esc(r.words[c].join(", "))}</td></tr>`).join("");
+    return `<div class="card entry">
+      <div class="pics e">${TT.esc(r.bare)}</div>
+      <div><span class="w">${TT.esc(ws[0] || "")}</span> <span class="alt">${TT.esc(ws.slice(1).join(", "))}</span>
+        <span class="alt"> · BCI ${r.id}</span></div>
+      <div class="chips">${parts}</div>
+      <div class="acts"><a class="btn small ghost" href="${TT.suggest("picture", r)}">💡 Suggest a picture</a>
+        <a class="btn small ghost" href="${TT.suggest("word", r, { language: "" })}">✍️ Suggest a word</a></div>
+      <details class="all"><summary>All ${TT.langs.filter(c => r.words[c].length).length} languages</summary><table>${all}</table></details>
+    </div>`;
+  };
+  const run = () => {
+    const id = params.get("id");
+    if (id && !q.value) { const r = TT.byId(id); res.innerHTML = r ? entry(r) : `<p class="muted">BCI ${TT.esc(id)} has no pictures yet.</p>`; return; }
+    const found = TT.find(q.value);
+    res.innerHTML = q.value.trim() === "" ? "" : found.length ? found.map(entry).join("") :
+      `<p class="muted">🤷 Not yet. <a href="https://github.com/wallisoft/tiny-talk/issues/new?template=word.yml">Suggest it</a>.</p>`;
+  };
+  let t; q.addEventListener("input", () => { clearTimeout(t); t = setTimeout(() => { params.delete("id"); run(); }, 120); });
+  if (params.get("q")) q.value = params.get("q");
+  TT.langPicker(document.getElementById("lang"), run);
+  run();
+});
+</script>
+<footer><div class="wrap">
+  Words, recipes and translations: <a href="https://www.blissymbolics.org">Blissymbolics Communication International</a>,
+  BCI Authorized Vocabulary 2026-09-12, CC BY-SA 4.0. tiny-talk's pictures and data: CC BY-SA 4.0,
+  <a href="https://github.com/wallisoft/tiny-talk">on GitHub</a>. tiny-talk is independent of BCI.
+  Made by Wallisoft, with <a href="https://visualised.io">Visualised</a>.
+</div></footer>
+<script>document.querySelectorAll("nav a[data-p]").forEach(a => { if (location.pathname.includes(a.dataset.p)) a.classList.add("on"); });</script>
+</body>
+</html>

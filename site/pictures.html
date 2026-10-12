@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The pictures · tiny-talk</title>
+<meta name="description" content="tiny-talk: say it in pictures anyone can read. Blissymbolics written in emoji, in 19 languages. Look up any word, see how it is built, and vote on the pictures.">
+<link rel="icon" href="icon-128.png">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header><div class="wrap"><nav>
+  <a class="brand" href="index.html"><span class="e">👄➡️⬅️</span> tiny-talk</a>
+  <a href="words.html" data-p="words">Words</a>
+  <a href="pictures.html" data-p="pictures">Pictures</a>
+  <a href="vote.html" data-p="vote">Vote</a>
+  <a href="https://visualised.org">App</a>
+  <a href="https://github.com/wallisoft/tiny-talk">GitHub</a>
+  <select class="lang" id="lang" aria-label="Language"></select>
+</nav></div></header>
+<main><section><div class="wrap">
+  <h2>The pictures</h2>
+  <p class="lead">One for each of Bliss's basic characters, the most used first. These change slowly, in numbered editions, so what you learn stays true. Tap one to see the words it builds.</p>
+  <div class="search" style="margin-bottom:16px"><input id="f" type="search" placeholder="🔍" autocomplete="off"></div>
+  <div class="tiles" id="tiles"></div>
+</div></section></main>
+<script src="tt.js"></script>
+<script>
+TT.load().then(() => {
+  const f = document.getElementById("f"), el = document.getElementById("tiles");
+  const draw = () => {
+    const q = f.value.trim().toLowerCase();
+    el.innerHTML = [...TT.core()].map(([id, c]) => {
+      const r = TT.byId(id), m = r ? TT.word(r) : c.gloss.split(",")[0].replace(/_/g, " ");
+      if (q && !m.toLowerCase().includes(q) && !c.pic.includes(q)) return "";
+      return `<a class="tile" href="words.html?q=${encodeURIComponent(m)}"><div class="p e">${TT.esc(c.pic)}</div><div class="m">${TT.esc(m)}</div></a>`;
+    }).join("");
+  };
+  f.addEventListener("input", draw);
+  TT.langPicker(document.getElementById("lang"), draw);
+  draw();
+});
+</script>
+<footer><div class="wrap">
+  Words, recipes and translations: <a href="https://www.blissymbolics.org">Blissymbolics Communication International</a>,
+  BCI Authorized Vocabulary 2026-09-12, CC BY-SA 4.0. tiny-talk's pictures and data: CC BY-SA 4.0,
+  <a href="https://github.com/wallisoft/tiny-talk">on GitHub</a>. tiny-talk is independent of BCI.
+  Made by Wallisoft, with <a href="https://visualised.io">Visualised</a>.
+</div></footer>
+<script>document.querySelectorAll("nav a[data-p]").forEach(a => { if (location.pathname.includes(a.dataset.p)) a.classList.add("on"); });</script>
+</body>
+</html>
