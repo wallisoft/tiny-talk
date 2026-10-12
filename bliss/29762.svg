@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill-rule="evenodd" preserveAspectRatio="xMidYMid meet" stroke-linecap="round" viewBox="0 0 872 644"><style type="text/css">
+.brush0 { fill: rgb(255,255,255); }
+.pen0 { stroke: rgb(0,0,0); stroke-width: 1; stroke-linejoin: round; }
+.pen1 { stroke: rgb(0,0,0); stroke-width: 14; stroke-linejoin: round; }
+.brush1 { fill: none; }
+</style><g><path class="pen1" d="M 275,386 A 127.5,127.5 0 1 0 20,386" fill="none"/><line class="pen1" fill="none" x1="20" x2="20" y1="386" y2="514"/><line class="pen1" fill="none" x1="20" x2="276" y1="514" y2="514"/><line class="pen1" fill="none" x1="276" x2="276" y1="514" y2="386"/><line class="pen1" fill="none" x1="340" x2="468" y1="514" y2="386"/><line class="pen1" fill="none" x1="468" x2="596" y1="386" y2="514"/><line class="pen1" fill="none" x1="596" x2="340" y1="514" y2="514"/><path class="pen1" d="M 596.1,322 A 254.5,255.5 0 0 0 724.7,512.7" fill="none"/><path class="pen1" d="M 723,322 A 63.5,63.5 0 1 0 596,322" fill="none"/><path class="pen1" d="M 851,322 A 63.5,63.5 0 1 0 724,322" fill="none"/><path class="pen1" d="M 723.2,512.5 A 255.5,255.5 0 0 0 851.9,322" fill="none"/></g></svg>

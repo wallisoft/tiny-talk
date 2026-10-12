@@ -21,11 +21,11 @@
 </nav></div></header>
 <main><section><div class="wrap">
   <h2>Learn</h2>
-  <p class="lead">Start with 🧩: every word is built from a few roots, and each word here shows its own. Then ten short lessons, in your language, each with a quiz.</p>
+  <p class="lead">Each word in two scripts: tiny-talk's pictures, and under them the official Blissymbol. Start with 🧩: every word is built from a few roots, and each word here shows its own. Then ten short lessons, in your language, each with a quiz.</p>
   <div class="chips" id="tabs" style="margin-bottom:16px"></div>
   <div class="tiles" id="words"></div>
   <div class="card" style="margin-top:20px;text-align:center">
-    <div class="e" id="q" style="font-size:64px;line-height:1.2;min-height:78px"></div>
+    <div id="q" style="font-size:64px;line-height:1.2;min-height:78px"></div>
     <div class="grid" id="choices" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr));margin-top:12px"></div>
     <div id="score" style="font-size:20px;margin-top:12px;min-height:30px;white-space:pre-line"></div>
     <button class="btn" id="next" style="margin-top:8px">➡️</button>
@@ -57,7 +57,7 @@ TT.load().then(async () => {
     $("tabs").innerHTML = lessons.map((l, i) => `<a class="chip" href="#" data-i="${i}" style="${i === cur ? "background:#FDE68A" : ""}"><b class="e">${l.title}</b> ${i + 1}</a>`).join("");
     $("tabs").querySelectorAll("a").forEach(a => a.onclick = e => { e.preventDefault(); cur = +a.dataset.i; right = asked = 0; draw(); ask(); });
     const ids = (lessons[cur] || { ids: [] }).ids.filter(id => TT.byId(id));
-    $("words").innerHTML = ids.map(id => { const r = TT.byId(id); const ro = roots(id); return `<a class="tile" href="words.html?id=${id}"><div class="p e">${TT.esc(r.bare)}</div><div class="m"><b>${TT.esc(TT.word(r))}</b>${ro ? "<br>= " + TT.esc(ro) : ""}</div></a>`; }).join("");
+    $("words").innerHTML = ids.map(id => { const r = TT.byId(id); const ro = roots(id); return `<a class="tile" href="words.html?id=${id}"><div class="p e">${TT.esc(r.bare)}</div>${TT.bliss(id, "bliss small")}<div class="m"><b>${TT.esc(TT.word(r))}</b>${ro ? "<br>= " + TT.esc(ro) : ""}</div></a>`; }).join("");
   };
   const ask = () => {
     const ids = (lessons[cur] || { ids: [] }).ids.filter(id => TT.byId(id)); if (ids.length < 2) return;
@@ -65,7 +65,7 @@ TT.load().then(async () => {
     while (choices.length < Math.min(4, ids.length)) { const o = pick(ids); if (!choices.includes(o)) choices.push(o); }
     choices.sort(() => Math.random() - .5);
     quiz = { id, done: false };
-    $("q").textContent = TT.byId(id).bare;
+    $("q").innerHTML = `<span class="e">${TT.esc(TT.byId(id).bare)}</span><br>${TT.bliss(id, "bliss big")}`;
     $("choices").innerHTML = choices.map(c => `<button class="btn ghost" data-id="${c}">${TT.esc(TT.word(TT.byId(c)))}</button>`).join("");
     $("choices").querySelectorAll("button").forEach(b => b.onclick = () => {
       if (quiz.done) return; quiz.done = true; asked++;
@@ -82,7 +82,7 @@ TT.load().then(async () => {
 });
 </script>
 <footer><div class="wrap">
-  Words, recipes and translations: <a href="https://www.blissymbolics.org">Blissymbolics Communication International</a>,
+  Blissymbols, words, recipes and translations: <a href="https://www.blissymbolics.org">Blissymbolics Communication International</a>,
   BCI Authorized Vocabulary 2026-09-12, CC BY-SA 4.0. tiny-talk's pictures and data: CC BY-SA 4.0,
   <a href="https://github.com/wallisoft/tiny-talk">on GitHub</a>. tiny-talk is independent of BCI.
   Made by Wallisoft, with <a href="https://visualised.io">Visualised</a>.

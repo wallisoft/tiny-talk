@@ -23,7 +23,7 @@
 <div class="wrap hero">
   <div class="big e">👄➡️⬅️</div>
   <h1>Say it in pictures anyone can read.</h1>
-  <p>Type in your own language. What travels is only pictures, and it arrives in theirs. tiny-talk writes Blissymbolics in emoji: using it is learning it.</p>
+  <p>Type in your own language. What travels is only pictures, and it arrives in theirs. tiny-talk writes Blissymbolics in emoji, with the official Blissymbols alongside: using it is learning both.</p>
   <div class="btns">
     <a class="btn amber" href="chat.html">Start a chat</a>
     <a class="btn ghost" href="lessons.html">Learn it</a>
@@ -39,6 +39,7 @@
   <div class="reader card">
     <textarea id="msg" rows="2" class="e">👄⁠➡️⁠⬅️  🧑⁠❤️⁠➕⁠❗  ❤️⁠⬆️⁠🏷️  📅⁠🔜</textarea>
     <div class="out" id="out"></div>
+    <div class="blissrow" id="blissrow"></div>
   </div>
 </div></section>
 
@@ -66,7 +67,10 @@ TT.load().then(() => {
   document.getElementById("nPics").textContent = TT.core().size;
   document.getElementById("nLangs").textContent = TT.langs.length;
   const msg = document.getElementById("msg"), out = document.getElementById("out");
-  const readNow = () => out.textContent = "👁️ " + TT.read(msg.value);
+  const readNow = () => {
+    out.textContent = "👁️ " + TT.read(msg.value);
+    document.getElementById("blissrow").innerHTML = msg.value.trim().split(/\s+/).map(g => { const r = TT.byPic(g); return r ? TT.bliss(r.id) : ""; }).join("");
+  };
   msg.addEventListener("input", readNow);
   const show = ["hello", "goodbye", "happy", "sad", "tomorrow", "teacher", "peace", "kitchen", "to cry", "to dream", "friend", "song"];
   const draw = () => {
@@ -76,7 +80,7 @@ TT.load().then(() => {
       const parts = r.parts.map(p => TT.byId(p)).filter(Boolean).filter(p => !/^indicator|^\(/.test(p.words.en[0] || ""))
         .map(p => TT.word(p)).filter(Boolean);
       return `<a class="card recipe" style="text-decoration:none;color:inherit" href="words.html?id=${r.id}">
-        <div class="pics e">${TT.esc(r.bare)}</div><div class="w">${TT.esc(TT.word(r))}</div>
+        <div class="pics e">${TT.esc(r.bare)}</div>${TT.bliss(r.id, "bliss small")}<div class="w">${TT.esc(TT.word(r))}</div>
         <div class="how">${parts.length ? TT.esc(parts.join(" + ")) : ""}</div></a>`;
     }).join("");
   };
@@ -85,7 +89,7 @@ TT.load().then(() => {
 });
 </script>
 <footer><div class="wrap">
-  Words, recipes and translations: <a href="https://www.blissymbolics.org">Blissymbolics Communication International</a>,
+  Blissymbols, words, recipes and translations: <a href="https://www.blissymbolics.org">Blissymbolics Communication International</a>,
   BCI Authorized Vocabulary 2026-09-12, CC BY-SA 4.0. tiny-talk's pictures and data: CC BY-SA 4.0,
   <a href="https://github.com/wallisoft/tiny-talk">on GitHub</a>. tiny-talk is independent of BCI.
   Made by Wallisoft, with <a href="https://visualised.io">Visualised</a>.

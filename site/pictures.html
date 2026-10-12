@@ -34,7 +34,7 @@ TT.load().then(() => {
     el.innerHTML = [...TT.core()].map(([id, c]) => {
       const r = TT.byId(id), m = r ? TT.word(r) : c.gloss.split(",")[0].replace(/_/g, " ");
       if (q && !m.toLowerCase().includes(q) && !c.pic.includes(q)) return "";
-      return `<a class="tile" href="words.html?q=${encodeURIComponent(m)}"><div class="p e">${TT.esc(c.pic)}</div><div class="m">${TT.esc(m)}</div></a>`;
+      return `<a class="tile" href="words.html?q=${encodeURIComponent(m)}"><div class="p e">${TT.esc(c.pic)}</div>${TT.bliss(id, "bliss small")}<div class="m">${TT.esc(m)}</div></a>`;
     }).join("");
   };
   f.addEventListener("input", draw);
@@ -43,7 +43,7 @@ TT.load().then(() => {
 });
 </script>
 <footer><div class="wrap">
-  Words, recipes and translations: <a href="https://www.blissymbolics.org">Blissymbolics Communication International</a>,
+  Blissymbols, words, recipes and translations: <a href="https://www.blissymbolics.org">Blissymbolics Communication International</a>,
   BCI Authorized Vocabulary 2026-09-12, CC BY-SA 4.0. tiny-talk's pictures and data: CC BY-SA 4.0,
   <a href="https://github.com/wallisoft/tiny-talk">on GitHub</a>. tiny-talk is independent of BCI.
   Made by Wallisoft, with <a href="https://visualised.io">Visualised</a>.

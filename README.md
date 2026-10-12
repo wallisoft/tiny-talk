@@ -34,6 +34,7 @@ Everything is plain text, one thing to a line, so anyone can read it and every c
 | `core/markers.txt` | Bliss's grammar markers | rarely |
 | `recipes.txt` | what each word is built from | as Bliss's vocabulary grows |
 | `words/xx.txt` | the words for each symbol, in each language | freely: corrections and additions welcome |
+| `bliss/` | the official Blissymbol for each word, by BCI number (SVG, from BCI) | with BCI's releases |
 | `lessons.txt` | the lessons: pictures and the words they build, no language in them | freely |
 | `edge/pictures.txt` | whole words given a picture of their own | by vote |
 | `dist/` | the dictionary the app and the site read | built from the rest; don't edit |
@@ -50,7 +51,7 @@ with a form, and vote with a 👍 on the suggestions you like. The popular ones 
 
 ## Licence and thanks
 
-The words, recipes and their translations come from the **BCI Authorized Vocabulary** (2026-09-12) by
+The Blissymbol drawings, the words, recipes and their translations come from the **BCI Authorized Vocabulary** (2026-09-12) by
 [Blissymbolics Communication International](https://www.blissymbolics.org), under
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). tiny-talk's data, including the pictures it
 gives each character, is shared under the same licence: see [LICENSE.md](LICENSE.md). The code in `tools/`

@@ -63,12 +63,15 @@ const TT = (() => {
       symbol: r ? r.id : "", meaning: word(r, lang()), current: kind === "picture" ? (r ? r.bare : "") : word(r, lang()), ...extra });
     return `https://github.com/${REPO}/issues/new?` + p.toString();
   };
+  /* the official Blissymbol for a word, beside its pictures (BCI's own drawings, served from the repo) */
+  const BLISS = `https://cdn.jsdelivr.net/gh/${REPO}@main/bliss/`;
+  const bliss = (id, cls = "bliss") => id ? `<img class="${cls}" src="${BLISS}${id}.svg" alt="" loading="lazy" onerror="this.remove()">` : "";
   const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   function langPicker(el, onChange) {
     el.innerHTML = langs.map(c => `<option value="${c}">${NAMES[c]}</option>`).join("");
     el.value = lang();
     el.addEventListener("change", () => { setLang(el.value); onChange && onChange(el.value); });
   }
-  return { load, lang, setLang, word, find, read, suggest, esc, langPicker, NAMES, REPO, RAW,
+  return { load, lang, setLang, word, find, read, suggest, esc, langPicker, bliss, NAMES, REPO, RAW, byPic: p => byPic.get(p.split(WJ).join("")),
     get rows() { return rows; }, get langs() { return langs; }, byId: id => byId.get(id), core: () => core };
 })();

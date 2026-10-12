@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill-rule="evenodd" preserveAspectRatio="xMidYMid meet" stroke-linecap="round" viewBox="0 0 308 324"><style type="text/css">
+.brush0 { fill: rgb(255,255,255); }
+.pen0 { stroke: rgb(0,0,0); stroke-width: 1; stroke-linejoin: round; }
+.pen1 { stroke: rgb(0,0,0); stroke-width: 7; stroke-linejoin: round; }
+.brush1 { fill: none; }
+.brush2 { fill: rgb(0,0,0); }
+</style><g><path class="pen1" d="M 297,194 A 63.5,63.5 0 1 0 170,194" fill="none"/><line class="pen1" fill="none" x1="218" x2="218" y1="162" y2="210"/><line class="pen1" fill="none" x1="218" x2="218" y1="225" y2="225"/><line class="pen1" fill="none" x1="250" x2="250" y1="162" y2="210"/><line class="pen1" fill="none" x1="250" x2="250" y1="225" y2="225"/><path class="pen1" d="M 11,161.9 A 126.5,127.5 0 0 0 74.7,256.7" fill="none"/><path class="pen1" d="M 73,162 A 31.5,31.5 0 1 0 10,162" fill="none"/><path class="pen1" d="M 137,162 A 31.5,31.5 0 1 0 74,162" fill="none"/><path class="pen1" d="M 73.2,256.6 A 127,127.5 0 0 0 136.9,161.9" fill="none"/></g></svg>

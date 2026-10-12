@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill-rule="evenodd" preserveAspectRatio="xMidYMid meet" stroke-linecap="round" viewBox="0 0 1000 644"><style type="text/css">
+.brush0 { fill: rgb(255,255,255); }
+.pen0 { stroke: rgb(0,0,0); stroke-width: 1; stroke-linejoin: round; }
+.pen1 { stroke: rgb(0,0,0); stroke-width: 14; stroke-linejoin: round; }
+.brush1 { fill: none; }
+</style><g><line class="pen1" fill="none" x1="20" x2="84" y1="514" y2="386"/><line class="pen1" fill="none" x1="84" x2="148" y1="386" y2="514"/><line class="pen1" fill="none" x1="212" x2="340" y1="258" y2="386"/><line class="pen1" fill="none" x1="340" x2="212" y1="386" y2="514"/><line class="pen1" fill="none" x1="340" x2="468" y1="258" y2="386"/><line class="pen1" fill="none" x1="468" x2="340" y1="386" y2="514"/><path class="pen1" d="M 532.1,322 A 254.5,255.5 0 0 0 660.7,512.7" fill="none"/><path class="pen1" d="M 659,322 A 63.5,63.5 0 1 0 532,322" fill="none"/><path class="pen1" d="M 787,322 A 63.5,63.5 0 1 0 660,322" fill="none"/><path class="pen1" d="M 659.2,512.5 A 255.5,255.5 0 0 0 787.9,322" fill="none"/><line class="pen1" fill="none" x1="916" x2="852" y1="258" y2="322"/><line class="pen1" fill="none" x1="916" x2="980" y1="258" y2="322"/><line class="pen1" fill="none" x1="916" x2="916" y1="258" y2="514"/></g></svg>

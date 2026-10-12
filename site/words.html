@@ -40,7 +40,7 @@ TT.load().then(() => {
     }).join("");
     const all = TT.langs.filter(c => r.words[c].length).map(c => `<tr><td>${TT.NAMES[c]}</td><td>${TT.esc(r.words[c].join(", "))}</td></tr>`).join("");
     return `<div class="card entry">
-      <div class="pics e">${TT.esc(r.bare)}</div>
+      <div class="pics"><span class="e">${TT.esc(r.bare)}</span><br>${TT.bliss(r.id)}</div>
       <div><span class="w">${TT.esc(ws[0] || "")}</span> <span class="alt">${TT.esc(ws.slice(1).join(", "))}</span>
         <span class="alt"> · BCI ${r.id}</span></div>
       <div class="chips">${parts}</div>
@@ -63,7 +63,7 @@ TT.load().then(() => {
 });
 </script>
 <footer><div class="wrap">
-  Words, recipes and translations: <a href="https://www.blissymbolics.org">Blissymbolics Communication International</a>,
+  Blissymbols, words, recipes and translations: <a href="https://www.blissymbolics.org">Blissymbolics Communication International</a>,
   BCI Authorized Vocabulary 2026-09-12, CC BY-SA 4.0. tiny-talk's pictures and data: CC BY-SA 4.0,
   <a href="https://github.com/wallisoft/tiny-talk">on GitHub</a>. tiny-talk is independent of BCI.
   Made by Wallisoft, with <a href="https://visualised.io">Visualised</a>.
