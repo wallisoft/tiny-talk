@@ -21,13 +21,13 @@
 </nav></div></header>
 <main><section><div class="wrap">
   <h2>Learn</h2>
-  <p class="lead">Ten short lessons, each a handful of pictures and the words they build, shown in your language. Then a quiz.</p>
+  <p class="lead">Start with 🧩: every word is built from a few roots, and each word here shows its own. Then ten short lessons, in your language, each with a quiz.</p>
   <div class="chips" id="tabs" style="margin-bottom:16px"></div>
   <div class="tiles" id="words"></div>
   <div class="card" style="margin-top:20px;text-align:center">
     <div class="e" id="q" style="font-size:64px;line-height:1.2;min-height:78px"></div>
     <div class="grid" id="choices" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr));margin-top:12px"></div>
-    <div id="score" style="font-size:20px;margin-top:12px;min-height:30px"></div>
+    <div id="score" style="font-size:20px;margin-top:12px;min-height:30px;white-space:pre-line"></div>
     <button class="btn" id="next" style="margin-top:8px">➡️</button>
   </div>
 </div></section></main>
@@ -42,11 +42,22 @@ TT.load().then(async () => {
   let cur = 0, quiz = null, right = 0, asked = 0;
   const $ = id => document.getElementById(id);
   const pick = a => a[Math.floor(Math.random() * a.length)];
+  const MARK = new Set(TT.rows.filter(r => /^indicator/.test(r.words.en[0] || "")).map(r => r.id));
+  /* how a word is built: its roots with their meanings, one level further in brackets */
+  const roots = (id, deep = true) => {
+    const r = TT.byId(id); if (!r || r.parts.length < 2) return "";
+    return r.parts.map(p => TT.byId(p)).filter(Boolean).map(p => {
+      if (MARK.has(p.id)) return p.bare;
+      let pic = p.bare; for (const m of MARK) { const mp = TT.byId(m).bare; if (pic.length > mp.length && pic.endsWith(mp)) pic = pic.slice(0, -mp.length); }
+      const sub = deep ? roots(p.id, false) : "";
+      return pic + " " + TT.word(p) + (sub ? " (" + sub + ")" : "");
+    }).join("  +  ");
+  };
   const draw = () => {
     $("tabs").innerHTML = lessons.map((l, i) => `<a class="chip" href="#" data-i="${i}" style="${i === cur ? "background:#FDE68A" : ""}"><b class="e">${l.title}</b> ${i + 1}</a>`).join("");
     $("tabs").querySelectorAll("a").forEach(a => a.onclick = e => { e.preventDefault(); cur = +a.dataset.i; right = asked = 0; draw(); ask(); });
     const ids = (lessons[cur] || { ids: [] }).ids.filter(id => TT.byId(id));
-    $("words").innerHTML = ids.map(id => { const r = TT.byId(id); return `<a class="tile" href="words.html?id=${id}"><div class="p e">${TT.esc(r.bare)}</div><div class="m">${TT.esc(TT.word(r))}</div></a>`; }).join("");
+    $("words").innerHTML = ids.map(id => { const r = TT.byId(id); const ro = roots(id); return `<a class="tile" href="words.html?id=${id}"><div class="p e">${TT.esc(r.bare)}</div><div class="m"><b>${TT.esc(TT.word(r))}</b>${ro ? "<br>= " + TT.esc(ro) : ""}</div></a>`; }).join("");
   };
   const ask = () => {
     const ids = (lessons[cur] || { ids: [] }).ids.filter(id => TT.byId(id)); if (ids.length < 2) return;
@@ -60,7 +71,8 @@ TT.load().then(async () => {
       if (quiz.done) return; quiz.done = true; asked++;
       const good = b.dataset.id === quiz.id; if (good) right++;
       b.style.background = good ? "#BBF7D0" : "#FECACA";
-      $("score").textContent = (good ? "✅ " : `❌ ${TT.byId(quiz.id).bare} = ${TT.word(TT.byId(quiz.id))}   `) + right + " / " + asked;
+      const ro = roots(quiz.id);
+      $("score").textContent = (good ? "✅ " : `❌ ${TT.byId(quiz.id).bare} = ${TT.word(TT.byId(quiz.id))}   `) + right + " / " + asked + (ro ? "\n" + TT.byId(quiz.id).bare + " = " + ro : "");
     });
     $("score").textContent = asked ? `✅ ${right} / ${asked}` : "❔";
   };

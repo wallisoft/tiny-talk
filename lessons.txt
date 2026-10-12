@@ -1,5 +1,7 @@
 # tiny-talk lessons: a title in pictures, then the BCI numbers of the words it teaches, most basic first.
 # No language in here: the app and the site show each word in the learner's own language. Add or reorder freely.
+# The first lesson (🧩) is how words are built: each word shows the roots it is made from.
+🧩|14676 16702 14702 14454 17750 18295 17513 16734 15154 15662 14401 15981 13618 13875 16455
 🧑|16161 15416 18269 13166 12603 14401 12888 14439
 ❤️|14164 17983 13869 14676 16702 15399 12377 13416 12615
 ▶️|13906 13881 17008 17718 15161 16465 18285 13618 13875 15184
