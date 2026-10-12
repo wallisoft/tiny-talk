@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learn · tiny-talk</title>
+<meta name="description" content="tiny-talk: say it in pictures anyone can read. Blissymbolics written in emoji, in 19 languages. Look up any word, see how it is built, and vote on the pictures.">
+<link rel="icon" href="icon-128.png">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header><div class="wrap"><nav>
+  <a class="brand" href="index.html"><span class="e">👄➡️⬅️</span> tiny-talk</a>
+  <a href="chat.html" data-p="chat">Chat</a>
+  <a href="lessons.html" data-p="lessons">Learn</a>
+  <a href="words.html" data-p="words">Words</a>
+  <a href="pictures.html" data-p="pictures">Pictures</a>
+  <a href="vote.html" data-p="vote">Vote</a>
+  <a href="https://github.com/wallisoft/tiny-talk">GitHub</a>
+  <select class="lang" id="lang" aria-label="Language"></select>
+</nav></div></header>
+<main><section><div class="wrap">
+  <h2>Learn</h2>
+  <p class="lead">Ten short lessons, each a handful of pictures and the words they build, shown in your language. Then a quiz.</p>
+  <div class="chips" id="tabs" style="margin-bottom:16px"></div>
+  <div class="tiles" id="words"></div>
+  <div class="card" style="margin-top:20px;text-align:center">
+    <div class="e" id="q" style="font-size:64px;line-height:1.2;min-height:78px"></div>
+    <div class="grid" id="choices" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr));margin-top:12px"></div>
+    <div id="score" style="font-size:20px;margin-top:12px;min-height:30px"></div>
+    <button class="btn" id="next" style="margin-top:8px">➡️</button>
+  </div>
+</div></section></main>
+<script src="tt.js"></script>
+<script>
+TT.load().then(async () => {
+  let lessons = [];
+  for (const url of [TT.RAW + "lessons.txt", "data/lessons.txt"]) {
+    try { const r = await fetch(url, { cache: "no-cache" }); if (r.ok) { lessons = (await r.text()).split("\n").filter(l => l.includes("|") && !l.startsWith("#"))
+      .map(l => ({ title: l.split("|")[0], ids: l.split("|")[1].trim().split(/\s+/) })); break; } } catch (e) {}
+  }
+  let cur = 0, quiz = null, right = 0, asked = 0;
+  const $ = id => document.getElementById(id);
+  const pick = a => a[Math.floor(Math.random() * a.length)];
+  const draw = () => {
+    $("tabs").innerHTML = lessons.map((l, i) => `<a class="chip" href="#" data-i="${i}" style="${i === cur ? "background:#FDE68A" : ""}"><b class="e">${l.title}</b> ${i + 1}</a>`).join("");
+    $("tabs").querySelectorAll("a").forEach(a => a.onclick = e => { e.preventDefault(); cur = +a.dataset.i; right = asked = 0; draw(); ask(); });
+    const ids = (lessons[cur] || { ids: [] }).ids.filter(id => TT.byId(id));
+    $("words").innerHTML = ids.map(id => { const r = TT.byId(id); return `<a class="tile" href="words.html?id=${id}"><div class="p e">${TT.esc(r.bare)}</div><div class="m">${TT.esc(TT.word(r))}</div></a>`; }).join("");
+  };
+  const ask = () => {
+    const ids = (lessons[cur] || { ids: [] }).ids.filter(id => TT.byId(id)); if (ids.length < 2) return;
+    const id = pick(ids), choices = [id];
+    while (choices.length < Math.min(4, ids.length)) { const o = pick(ids); if (!choices.includes(o)) choices.push(o); }
+    choices.sort(() => Math.random() - .5);
+    quiz = { id, done: false };
+    $("q").textContent = TT.byId(id).bare;
+    $("choices").innerHTML = choices.map(c => `<button class="btn ghost" data-id="${c}">${TT.esc(TT.word(TT.byId(c)))}</button>`).join("");
+    $("choices").querySelectorAll("button").forEach(b => b.onclick = () => {
+      if (quiz.done) return; quiz.done = true; asked++;
+      const good = b.dataset.id === quiz.id; if (good) right++;
+      b.style.background = good ? "#BBF7D0" : "#FECACA";
+      $("score").textContent = (good ? "✅ " : `❌ ${TT.byId(quiz.id).bare} = ${TT.word(TT.byId(quiz.id))}   `) + right + " / " + asked;
+    });
+    $("score").textContent = asked ? `✅ ${right} / ${asked}` : "❔";
+  };
+  $("next").onclick = ask;
+  TT.langPicker(document.getElementById("lang"), () => { draw(); ask(); });
+  draw(); ask();
+});
+</script>
+<footer><div class="wrap">
+  Words, recipes and translations: <a href="https://www.blissymbolics.org">Blissymbolics Communication International</a>,
+  BCI Authorized Vocabulary 2026-09-12, CC BY-SA 4.0. tiny-talk's pictures and data: CC BY-SA 4.0,
+  <a href="https://github.com/wallisoft/tiny-talk">on GitHub</a>. tiny-talk is independent of BCI.
+  Made by Wallisoft, with <a href="https://visualised.io">Visualised</a>.
+</div></footer>
+<script>document.querySelectorAll("nav a[data-p]").forEach(a => { if (location.pathname.includes(a.dataset.p)) a.classList.add("on"); });</script>
+</body>
+</html>

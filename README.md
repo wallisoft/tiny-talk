@@ -19,9 +19,10 @@ each basic character one picture, and every word follows from Bliss's own recipe
 A message written this way belongs to no language. Whoever reads it reads it in theirs: the same
 👄➡️⬅️ 🧑❤️➕❗ is *bonjour ami*, *Guten Tag Freund*, *здравствуйте друг*.
 
-- **The app:** [tiny-talk on visualised.org](https://visualised.org) (in a browser, or as an Android app).
-  19 languages, works with no internet.
-- **The site:** [tiny-talk.world](https://tiny-talk.world): look up any word, see how it is built, vote.
+- **The app:** a messenger. Type in your own language; what travels is only pictures, and it arrives in the
+  reader's language. Lessons and a dictionary in 19 languages. [Android app](https://visualised.org/downloads/TinyTalk.apk),
+  or [in a browser](https://tiny-talk.world/chat.html).
+- **The site:** [tiny-talk.world](https://tiny-talk.world): chat in the browser, take the lessons, look up any word, vote.
 
 ## What is here
 
@@ -33,6 +34,7 @@ Everything is plain text, one thing to a line, so anyone can read it and every c
 | `core/markers.txt` | Bliss's grammar markers | rarely |
 | `recipes.txt` | what each word is built from | as Bliss's vocabulary grows |
 | `words/xx.txt` | the words for each symbol, in each language | freely: corrections and additions welcome |
+| `lessons.txt` | the lessons: pictures and the words they build, no language in them | freely |
 | `edge/pictures.txt` | whole words given a picture of their own | by vote |
 | `dist/` | the dictionary the app and the site read | built from the rest; don't edit |
 | `site/` | the tiny-talk.world website (it reads `dist/` from here) | improvements welcome |
